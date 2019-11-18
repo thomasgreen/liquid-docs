@@ -14,17 +14,19 @@ Liquid is a PHP port of the [Liquid template engine for Ruby](https://github.com
 
 Liquid was written to meet three templating library requirements: good performance, easy to extend, and simply to use.
 
-##Basic Use
+## Basic Use
 
 The main class is `Liquid::Template` class. There are two separate stages of working with Liquid templates: parsing and rendering. Here is a simple example:
 
-    use Liquid\Template;
+```php
+use Liquid\Template;
 
-    $template = new Template();
-    $template->parse("Hello, {{ name }}!");
-    echo $template->render(array('name' => 'World');
+$template = new Template();
+$template->parse("Hello, {{ name }}!");
+echo $template->render(array('name' => 'World');
 
-	// Will echo
-	// Hello, World!
+// Will echo
+// Hello, World!
+```
 
 To find more examples have a look at the `examples` directory or at the original Ruby implementation repository's [wiki page](https://github.com/Shopify/liquid/wiki).
