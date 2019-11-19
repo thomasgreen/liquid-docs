@@ -46,20 +46,20 @@ All values in Liquid are truthy except `nil` and `false`.
 In the example below, the string “Tobi” is not a boolean, but it is truthy in a conditional:
 
 ```
-{% assign tobi = "Tobi" %}
+<% assign tobi = "Tobi" %}
 
-{% if tobi %}
+<% if tobi %}
   This condition will always be true.
-{% endif %}
+<% endif %}
 ```
 
 Strings, even when empty, are truthy. The example below will result in empty HTML tags if `settings.fp_heading` is empty:
 
 Input:
 ```
-{% if settings.fp_heading %}
-  <h1>{{ settings.fp_heading }}</h1>
-{% endif %}
+<% if settings.fp_heading %>
+  <h1><%= settings.fp_heading %></h1>
+<% endif %>
 ```
 
 Output:
@@ -105,8 +105,8 @@ Normally, even if it doesn’t print text, any line of Liquid in your template w
 
 Input:
 ```
-{% assign my_variable = "tomato" %}
-{{ my_variable }}
+<% assign my_variable = "tomato" %>
+<%= my_variable %>
 ```
 
 Notice the blank line before “tomato” in the rendered template:
@@ -118,8 +118,8 @@ tomato
 By including hyphens in your assign tag, you can strip the generated whitespace from the rendered template:
 ```
 
-{%- assign my_variable = "tomato" -%}
-{{ my_variable }}
+<%- assign my_variable = "tomato" -%>
+<%= my_variable %>
 ```
 
 Output:

@@ -423,3 +423,59 @@ Output:
 ```
 I am 35 and my favourite food is pizza.
 ```
+
+## ampstate
+
+Allows the input of amp state. 
+
+Input:
+```
+<% ampstate 'productList' src:endpoint, [src]:endpoint %>
+  {
+    "Data":true
+  }
+<% endampstate %>
+```
+
+Output:
+```
+<amp-state
+  id="'productList'"
+  src="/amp/listings/products/c:1"
+  [src]="/amp/listings/products/c:1" >
+</amp-state>
+```
+
+Tag parameters are in key/value pairs, separated by a comma.
+
+The key does not need to be enclosed in quotes and will always be output as a literal string.
+
+The value does need to be enclosed in quotes if it is to be interpreted as a literal string - if it is not enclosed in quotes it will be interpreted as a Liquid variable. Integers are always interpreted as a literal string.
+
+Input:
+```
+<% ampstate 'product' src:endpoint, count:5, title='Please Wait' %>
+  {
+    "Spinner":true
+  }
+<% endampstate %>
+```
+
+Output:
+```
+<amp-state
+  id="'product'"
+  src="/amp/listings/products/c:1"
+  count="5"
+  title="Please Wait" >
+  <script type="application/json">
+    {
+      "Spinner":true
+    }
+  </script>
+</amp-state>
+```
+
+## ampmacro
+
+//todo
