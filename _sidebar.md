@@ -1,3 +1,3 @@
- - [Introduction](/)
+ - [Basics](/)
  - [Tags](tags.md)
  - [Filters](filters.md)

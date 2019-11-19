@@ -304,8 +304,23 @@ This will render:
 
 ## Icon
 
-//todo
+The `icon` tag will render out an svg icon from the `media/icons` folder.
 
+Input:
+```
+<% icon 'loading/spin' class: 'spin', size: 64 %>
+```
+
+Props can be passed in after the name, comma seperated. 
+
+**You may pass in liquid variables as the icon name by not wrapping the name in `'`**
+
+Example:
+Input:
+```
+<% assign foo = 'arrow-up' %>
+<% icon foo class: 'spin', size: 64 %>
+```
 
 ## Assigning Variables
 
@@ -343,7 +358,37 @@ bar
 
 #### Using ternary operator
 
-TODO
+You can use a ternary operator within an `assign` tag, instead of using verbose `if/else`.
+
+Example:
+```
+<% assign basketCount = 4  %>
+<% assign hiddenState = basketCount > 0 ? '' : 'hidden' %>
+```
+
+This will set `hiddenState` to an empty string, as `basketCount` is greater than 4.
+
+`assign` ternary supports **one** logical operator either `and` (which is the same as a php `&&`), and `or` (a php `||`).
+
+Example:
+```
+<% assign basketCount = 4  %>
+<% assign bar = true  %>
+<% assign hiddenState = (bar and basketCount > 0) ? '' : 'hidden' %>
+```
+
+The following comparison operators are available to use:
+
+| Operators     | Name                      |   
+| ------------- | ------------------------- |
+| `==`          | Equal                     |
+| `!=`          | Not equal                 |
+| `===`         | Identical                 |
+| `!==`         | Not identical             |
+| `>`           | Greater than              |
+| `>=`          | Greater than or equal to  |
+| `<`           | Less than                 |
+| `<=`          | Less than or equal to     |
 
 ### capture
 

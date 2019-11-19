@@ -88,8 +88,10 @@ Appends a unique md5 string to the end of the input. Used to generate ID's for a
 
 Input:
 ```
+<%= 'foobar_' | unique %>
 ```
 
 Output:
 ```
+foobar_98bf005fbecab16d3c3fe86dff2a25d7
 ```
