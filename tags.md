@@ -480,7 +480,7 @@ Output:
 
 //todo
 
-## AMP FormBuilder
+## formbuilder
 
 ### Building a form
 To build a form you will need a pre-existing FormBuilder form. If you do not have one there is existing [documentation](https://github.com/VisualsoftUK/vscommerce3/tree/master/modules/formbuilder) to describe form setup. If following the documentation bear in mind that only the library, config and `error_messages.php` language files are required, everything else is handled by the liquid templates. Please bear in mind that any changes to existing FormBuilder files will need to maintain backwards compatibility.
