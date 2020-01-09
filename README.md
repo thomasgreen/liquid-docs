@@ -46,11 +46,11 @@ All values in Liquid are truthy except `nil` and `false`.
 In the example below, the string “Tobi” is not a boolean, but it is truthy in a conditional:
 
 ```
-<% assign tobi = "Tobi" %}
+<% assign tobi = "Tobi" %>
 
-<% if tobi %}
+<% if tobi %>
   This condition will always be true.
-<% endif %}
+<% endif %>
 ```
 
 Strings, even when empty, are truthy. The example below will result in empty HTML tags if `settings.fp_heading` is empty:
