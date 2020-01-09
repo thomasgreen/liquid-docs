@@ -479,3 +479,72 @@ Output:
 ## ampmacro
 
 //todo
+
+## AMP FormBuilder
+
+### Building a form
+To build a form you will need a pre-existing FormBuilder form. If you do not have one there is existing [documentation](https://github.com/VisualsoftUK/vscommerce3/tree/master/modules/formbuilder) to describe form setup. If following the documentation bear in mind that only the library, config and `error_messages.php` language files are required, everything else is handled by the liquid templates. Please bear in mind that any changes to existing FormBuilder files will need to maintain backwards compatibility.
+
+The `FormBuilder` library has been modified slightly for AMP forms. Instead of using the `view()` method to render a form it uses the `ampView()` method. See the `TagFormbuilder` class for more details on how we render a form for AMP.
+
+### Loading a form
+Within a liquid template, you ca call a form like this. You could also load the form with `Component::loadComponent` in PHP if required.
+
+`<% formbuilder 'amp_register' action_url:'/amp/customer/register', id:'register_form', form_success_redirect:'/customer', action_type:'action-xhr', form_target:'_top' button_type:'submit', button_text:'submit_register' %>`
+
+It is way neater to define the parameters in the FormBuilder config file for the form though, so the above tag could end up looking like this:
+
+`<% formbuilder 'amp_register' %>`
+
+If the FormBuilder config file included the following (id, action_type, form_target, button_type, action_url and button_text can normally be ommitted as they have sensible defaults):
+
+```
+// AMP default configuration
+$config['amp'] = [
+    'action_url' => '/amp/customer/register',
+    'id' => 'register_form',
+    'form_success_redirect' => '/customer',
+    'action_type' => 'action-xhr',
+    'form_target' => '_top',
+    'button_type' => 'submit',
+    'button_text' => 'submit_register',
+];
+```
+
+The resulting form looks like this:
+
+@TODO: insert FormBuilder image.
+
+The FormBuilder class performs the following tasks:
+* The input config file is loaded from the `amp_register` FormBuilder config.
+* Form action is set by the `action_url` parameter, and rather than just placing this value in an `action=""` attribute, it's placed inside the type specified by the `action_type` parameter. **This is an optional field and defaults to /amp/form/submit, which will work for most FormBuilder forms.**
+* The form ID is set to `register_form` - this ID is also reused for the submit button by default. **This is an optional field and under most circumstances should be omitted.**
+* A custom form parameter, in this case `form_target` is set and passed to the form with the value of "`_top`". This is not a standard attribute that is coded into FormBuilder, any parameter with a name that starts `form_` will have the `form_` prefix removed and added to the form tag as a parameter. **This is an optional field that defaults to "_top".**
+* `Form_success_redirect` is the URL the customer will be sent to when they successfully submit a form (including passing validation). Don't provide the domain in this, just provide the relative path to the URL you'd like to be redirected to.
+* `Button_type` is passed to the form's submit button. This is a custom parameter - you can dynamically add any attribute to a button by specifying it with the `button_` prefix. You could pass any button attribute to the button in this way. **This is an optional field that defaults to "submit"**
+* `Button_text` is a special button attribute used to control the text written on the button as well as the button's `aria-label`. In the above example we specify `submit_register` as the button text, which loads in the `formbuilder.button.submit_register` language string as the text on the button, and `formbuilder.button.submit_register_aria` as the `aria-label`.
+
+Not specified above: you can override the form classes by specifying a `form_class` attribute. This will override the default classes.
+
+### Wrappers
+Wrappers work in pretty much the same way as they do in the standard FormBuilder functionality. They're just a little view that prints out the input with some HTML around it. Most form inputs have `'wrapper' => 'default_wrapper'` defined in their config, but there are some exceptions. In the above case, we remove the _wrapper postfix and look for a wrapper template. In this case, it's found in `templates/responsive/amp/views/components/formbuilder/wrappers/default.liquid`
+
+### Validating and processing a form
+We lose a lot of frontend FormBuilder functionality with AMP, namely the ability to validate the form using JavaScript. HTML5 validation still works, but it's nowhere near as thorough or stylable. That being said, we do retain server-side validation from FormBuilder.
+
+Very little needs to be said about server-side validation. If you send your form to the `amp/form/submit` endpoint it'll handle all the form validation and processing. If, for whatever reason, you need to make your own endpoint for a specific form this endpoint is probably a good starting place.
+
+### Extending a form
+
+#### Input types
+Inside the FormBuilder config for the form each input has an `input_type` field. For example, the email input is of type "`email_input`". We remove the `_input` from the end of this value and look for the liquid template, in this case `templates/responsive/amp/views/components/formbuilder/inputs/default.liquid`. Note that we load `default.liquid`, which is the default template for all inputs. If `email.liquid` existed it would be loaded instead.
+
+#### Form config files
+There would be nothing stopping you from extending a form by copying the config and modifying it. In the above example `amp_register` is a cut-down version of `register`. It's been moved to its own config file with its own library to allow for a two-field registration form that would have been incompatible with the existing library. 
+
+#### New form template
+Form templates are stored in `templates/responsive/amp/views/components/formbuilder/forms`, and by default we load the `default.liquid` template. If, for whatever reason, you need to customise this template for just one form you can override it. Simply add a new liquid template to this directory with the same name as your form. In the above example we load the `amp_register` form, so if I wanted to have a unique form template for this I'd create an `amp-register.liquid` template file. Note that the config file uses underscores whereas the liquid template uses hyphens.
+
+If you have a form in multiple locations on a site and you want one instance of the form to have a different template to the rest of the forms you can specify this when you call the Liquid tag, like this:
+
+`<% formbuilder 'amp_register' template:'amp_register_checkout' %>`
