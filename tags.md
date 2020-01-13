@@ -526,6 +526,14 @@ The FormBuilder class performs the following tasks:
 
 Not specified above: you can override the form classes by specifying a `form_class` attribute. This will override the default classes.
 
+### Palette
+FormBuilder works with the liquid_palette config file. You can specify changes in the normal way. As an example, to modify a form's palette for a form called 'login':
+`$config['login'] = [/* Palette */];'`
+You can address inputs on a form. Button, for example, is addressed like this:
+`$config['login']['button'] = [/* Palette */];'`
+Most other inputs have a wrapper and will need the wrapper name added:
+`$config['login']['default']['input'] = [/* Palette */];'`
+
 ### Wrappers
 Wrappers work in pretty much the same way as they do in the standard FormBuilder functionality. They're just a little view that prints out the input with some HTML around it. Most form inputs have `'wrapper' => 'default_wrapper'` defined in their config, but there are some exceptions. In the above case, we remove the _wrapper postfix and look for a wrapper template. In this case, it's found in `templates/responsive/amp/views/components/formbuilder/wrappers/default.liquid`
 
