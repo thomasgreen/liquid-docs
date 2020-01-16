@@ -569,6 +569,22 @@ We lose a lot of frontend FormBuilder functionality with AMP, namely the ability
 
 Very little needs to be said about server-side validation. If you send your form to the `amp/form/submit` endpoint it'll handle all the form validation and processing. If, for whatever reason, you need to make your own endpoint for a specific form this endpoint is probably a good starting place.
 
+### Accessing form data from an input
+You may need to access form data from an input. You can do this via a liquid tag. If you wanted to echo the form
+identifier, for example, you can access it by calling the form_identifier method: `<%= form.form_identifier %>`
+
+Form methods accessible from inputs:
+ - form_identifier
+ - form_template
+ - form_success_redirect
+ - action_type
+ - action_url
+ - form_method
+ - form_options
+ - form_type
+ - identifier
+ - referer
+
 ### Extending a form
 
 #### Input types
