@@ -590,6 +590,14 @@ Form methods accessible from inputs:
 #### Input types
 Inside the FormBuilder config for the form each input has an `input_type` field. For example, the email input is of type "`email_input`". We remove the `_input` from the end of this value and look for the liquid template, in this case `templates/responsive/amp/views/components/formbuilder/inputs/default.liquid`. Note that we load `default.liquid`, which is the default template for all inputs. If `email.liquid` existed it would be loaded instead.
 
+#### Input defaults
+Input types can be set as part of the liquid FormBuilder call and a liquid variable can be assigned to an input as a
+default. Any inputs defined in this way will overwrite a default set in the FormBuilder config. As an example:
+
+`input_default_value--parent_product_id: product.parent_product_id`
+
+Sets the input with the name of `parent_product_id` to be the contents of the `product.parent_product_id` variable.
+
 #### Form config files
 There would be nothing stopping you from extending a form by copying the config and modifying it. In the above example `amp_register` is a cut-down version of `register`. It's been moved to its own config file with its own library to allow for a two-field registration form that would have been incompatible with the existing library. 
 
