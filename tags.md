@@ -275,6 +275,23 @@ Example use of `component` tag:
 
 **You must close the component tag with `<% endcomponent %>`, otherwise it will not work.**
 
+## Portal & Portalprint
+
+You can define a section of code to be printed out further on in the liquid process. For example, modals may need to printed at the bototm of the body etc.
+
+To define a portal, just pass in a name as an arguement:
+```
+<% portal 'test_portal' %>
+        This should print after the create account button
+    <% endportal %>
+```
+
+To print it out:
+```
+<% portalprint 'test_portal' %>
+```
+Just use `portalprint` with the same name. The code blocks are made global, so can be injected more than once if needed. 
+
 ### Slot Content
 You can pass in content between the `component` and `endcomponent` tags. This will be rendered by liquid, and will be available in a liquid variable called `slot`.
 
