@@ -498,6 +498,76 @@ Output:
 
 //todo
 
+
+## analytics
+
+For amp analytics to work we need to store each product list on a page, before we can render it into the amp analytics component.
+
+This is a two stage process. Firstly, we use the `analyticshook` tag to store the list. 
+
+```
+<% analyticshook
+    type: 'trigger',
+    action: 'product-impression'
+    listName: 'test',
+    products: products.products
+ %>
+<% endanalyticshook %>
+```
+
+This stores the products data in a list called `test` to be used in the Product Impression type. This can be used multiple times in different lists (eg product litsings page and recently viewed).
+
+We can then pull the data out of the hook using a filter. 
+
+```
+<% assign data = 'product-impression' | analyticshook %>
+```
+
+We can then use the `analytics` liquid tag to create the trigger. This trigger is then stored in an array.
+
+```
+
+<% analytics 'productImpression' type:'trigger' %>
+    {
+        "on": "visible",
+        "request": "pageview",
+        "extraUrlParams": {
+            <% for list in data %>
+                <% assign listId = forloop.index %>
+                "il<%= listId %>nm": "<%= list.listName %>",
+                <% for product in list.products %>
+                    "il<%= listId %>pi<%= forloop.index %>id": "<%= product.parent_product_id %>",
+                    "il<%= listId %>pi<%= forloop.index %>nm": "<%= product.title %>",
+                    "il<%= listId %>pi<%= forloop.index %>ca": "<%= product.category %>",
+                    "il<%= listId %>pi<%= forloop.index %>br": "<%= product.brand %>",
+                    "il<%= listId %>pi<%= forloop.index %>pr": "<%= product.current_price.numeric %>",
+                    "il<%= listId %>pi<%= forloop.index %>ps": <%= product.index | plus: 1 %><% if forloop.last == false %>,<% endif %>
+                <% endfor %>
+            <% endfor %>
+        }
+    }
+<% endanalytics %>
+```
+
+This data can then be rendered in the `amp-analytics` tag.
+
+```
+<amp-analytics type="googleanalytics" data-credentials="include">
+    <script type="application/json">
+        {
+            "vars" : {
+                "account": "<%= ga_property %>"
+            },
+            "requests" : {
+                "transaction": "${host}/collect?${basePrefix}&t=transaction${baseSuffix}",
+                "transactionItem": "${host}/collect?${basePrefix}&t=item${baseSuffix}"
+            },
+            "triggers": <% analyticsrender %>
+        }
+    </script>
+</amp-analytics>
+```
+
 ## formbuilder
 
 ### Building a form
